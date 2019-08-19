@@ -1,0 +1,123 @@
+DROP TABLE remitTbl;
+DROP TABLE remitFavTbl;
+DROP TABLE accountTbl;
+DROP TABLE bankTbl;
+DROP TABLE userTbl;
+
+DROP SEQUENCE NOSEQ;
+
+CREATE TABLE userTbl (
+    id varchar2(8) primary key,
+    password varchar2(12) not null,
+    uname nvarchar2(4) not null,
+    birth date not null,
+    tel varchar2(11)
+);
+
+CREATE TABLE bankTbl (
+    bcode char(2) primary key,
+    bname nvarchar2(8) not null
+);
+
+CREATE TABLE accountTbl (
+    aid varchar2(16) primary key,
+    id varchar2(8),
+    bcode char(2),
+    balance number(10) default 0
+);
+
+ALTER TABLE ACCOUNTTBL
+ADD CONSTRAINT ACCOUNTTBL_FK1 FOREIGN KEY
+(
+  ID 
+)
+REFERENCES USERTBL
+(
+  ID 
+)
+ENABLE;
+
+ALTER TABLE ACCOUNTTBL
+ADD CONSTRAINT ACCOUNTTBL_FK2 FOREIGN KEY
+(
+  BCODE 
+)
+REFERENCES BANKTBL
+(
+  BCODE 
+)
+ENABLE;
+
+CREATE SEQUENCE NOSEQ INCREMENT BY 1 START WITH 1;
+
+CREATE TABLE remitTbl (
+    no number(11) primary key,
+    outaid varchar2(16),
+    inaid varchar2(16),
+    price number(6) not null
+);
+
+CREATE TRIGGER REMITTBL_TRG 
+BEFORE INSERT ON REMITTBL 
+FOR EACH ROW 
+BEGIN
+  <<COLUMN_SEQUENCES>>
+  BEGIN
+    IF INSERTING AND :NEW.NO IS NULL THEN
+      SELECT NOSEQ.NEXTVAL INTO :NEW.NO FROM SYS.DUAL;
+    END IF;
+  END COLUMN_SEQUENCES;
+END;
+/
+
+ALTER TABLE REMITTBL
+ADD CONSTRAINT REMITTBL_FK1 FOREIGN KEY
+(
+  OUTAID 
+)
+REFERENCES ACCOUNTTBL
+(
+  AID 
+)
+ENABLE;
+
+ALTER TABLE REMITTBL
+ADD CONSTRAINT REMITTBL_FK2 FOREIGN KEY
+(
+  INAID 
+)
+REFERENCES ACCOUNTTBL
+(
+  AID 
+)
+ENABLE;
+
+
+CREATE TABLE remitFavTbl (
+    outaid varchar2(16),
+    inaid varchar2(16),
+    count number(11) default 0
+);
+
+ALTER TABLE REMITFAVTBL
+ADD CONSTRAINT REMITFAVTBL_FK1 FOREIGN KEY
+(
+  OUTAID 
+)
+REFERENCES ACCOUNTTBL
+(
+  AID 
+)
+ENABLE;
+
+ALTER TABLE REMITFAVTBL
+ADD CONSTRAINT REMITFAVTBL_FK2 FOREIGN KEY
+(
+  INAID 
+)
+REFERENCES ACCOUNTTBL
+(
+  AID 
+)
+ENABLE;
+
