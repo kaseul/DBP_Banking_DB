@@ -6,6 +6,7 @@ DROP TABLE userTbl;
 
 DROP SEQUENCE NOSEQ;
 
+-- 회원 테이블 : userTbl
 CREATE TABLE userTbl (
     id varchar2(8) primary key,
     password varchar2(12) not null,
@@ -14,11 +15,13 @@ CREATE TABLE userTbl (
     tel varchar2(11)
 );
 
+-- 은행 테이블 : bankTbl
 CREATE TABLE bankTbl (
     bcode char(2) primary key,
-    bname nvarchar2(8) not null
+    bname nvarchar2(9) not null
 );
 
+-- 계좌 테이블 : accountTbl
 CREATE TABLE accountTbl (
     aid varchar2(16) primary key,
     id varchar2(8),
@@ -50,6 +53,7 @@ ENABLE;
 
 CREATE SEQUENCE NOSEQ INCREMENT BY 1 START WITH 1;
 
+-- 송금 로그 테이블 : remitTbl
 CREATE TABLE remitTbl (
     no number(11) primary key,
     outaid varchar2(16),
@@ -92,7 +96,7 @@ REFERENCES ACCOUNTTBL
 )
 ENABLE;
 
-
+-- 자주 송금한 계좌 테이블 : remitFavTbl
 CREATE TABLE remitFavTbl (
     outaid varchar2(16),
     inaid varchar2(16),
@@ -121,3 +125,26 @@ REFERENCES ACCOUNTTBL
 )
 ENABLE;
 
+
+-- 더미 데이터 INSERT
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('01', N'KB국민은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('02', N'KDB산업은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('03', N'NH농협은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('04', N'신한은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('05', N'우리은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('06', N'스탠다드차타드은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('07', N'KEB하나은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('08', N'IBK기업은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('09', N'한국씨티은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('10', N'SH수협은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('11', N'DGB대구은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('12', N'BNK부산은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('13', N'광주은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('14', N'제주은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('15', N'전북은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('16', N'BNK경남은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('17', N'케이뱅크은행');
+INSERT INTO BANKTBL (BCODE, BNAME) VALUES ('18', N'한국카카오은행');
+
+--SELECT TEST
+SELECT * FROM accountTbl WHERE id = 'ddd';
