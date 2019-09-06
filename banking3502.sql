@@ -48,7 +48,8 @@ CREATE TABLE remitTbl (
     outaid varchar2(16),
     inaid varchar2(16),
     price number(7) not null,
-    commission number(4, 0) default 0
+    commission number(4, 0) default 0,
+    remit_date date default sysdate
 );
 
 CREATE TRIGGER REMITTBL_TRG 
@@ -78,7 +79,7 @@ ENABLE;
 CREATE TABLE remitFavTbl (
     outaid varchar2(16) not null,
     inaid varchar2(16) not null,
-    count number(11) default 0
+    count number(11) default 1
 );
 
 ALTER TABLE REMITFAVTBL
