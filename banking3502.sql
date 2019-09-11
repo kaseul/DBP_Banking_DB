@@ -92,7 +92,7 @@ ADD CONSTRAINT REMITFAVTBL_FK2 FOREIGN KEY (INAID)
 REFERENCES ACCOUNTTBL (AID)
 ENABLE;
 
---TRIGGER
+-- TRIGGER
 -- 송금 시 계좌 돈 관리
 CREATE OR REPLACE TRIGGER remit
 AFTER INSERT ON remitTbl
@@ -108,6 +108,19 @@ BEGIN
   WHEN NOT MATCHED THEN
     INSERT(F.outaid, F.inaid)
     VALUES(:NEW.outaid, :NEW.inaid);
+END;
+/
+
+-- STORED FUNCTION
+-- 월을 1~9월달은 한글자로 나타내는 함수
+CREATE OR REPLACE FUNCTION fnMonth(remit_date IN Date)
+RETURN VARCHAR
+IS
+  month VARCHAR2(7);
+BEGIN
+  month := TO_CHAR(remit_date, 'RRRR/MM');
+  IF(SUBSTR(month, 6, 1) = '0') THEN month:=CONCAT(SUBSTR(month, 1, 5), SUBSTR(month, 7)); END IF;
+  return month;
 END;
 /
 
